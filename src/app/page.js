@@ -1,95 +1,83 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from "next/image";
+
+const CardByHour = ({ hour, img }) => {
+  return (
+    <article>
+      <img
+        src={img || "../assets/Weather.png"}
+        alt={`Weather icon at hour ${hour}`}
+      />
+    </article>
+  );
+};
+
+const hoursExample = [
+  {
+    hour: "20:00 pm",
+    image: "",
+  },
+  {
+    hour: "21:00 pm",
+    image: "",
+  },
+  {
+    hour: "22:00 pm",
+    image: "",
+  },
+  {
+    hour: "23:00 pm",
+    image: "",
+  },
+  {
+    hour: "00:00 am",
+    image: "",
+  },
+  {
+    hour: "01:00 am",
+    image: "",
+  },
+];
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
+    <main>
+      <section>
+        <article>
+          <div>
+            <h3>Loja</h3>
+            <p>Mie, 8 de octubre, 19:00</p>
+          </div>
+          <img src="../assets/Weather.png" alt="Current weather icon" />
+        </article>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          <article>
+            <h2>Temperatura</h2>
+            <p>30 °C</p>
+          </article>
+          <article>
+            <h2>Humedad</h2>
+            <p>73%</p>
+          </article>
+          <article>
+            <h2>Viento</h2>
+            <p>8 km/h</p>
+          </article>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+        <div>
+          <h2>Historial</h2>
+          <img src="../assets/Graph example.png" alt="Gráfica de temperatura" />
+          <ul>
+            <li>Temperatura</li>
+            <li>Humedad</li>
+            <li>Viento</li>
+          </ul>
+        </div>
+      </section>
+      <section>
+        {hoursExample.map((element) => (
+          <CardByHour {...element} />
+        ))}
+      </section>
     </main>
-  )
+  );
 }
