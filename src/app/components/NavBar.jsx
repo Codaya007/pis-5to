@@ -8,6 +8,12 @@ export default function () {
         <ul>
           <li>
             {/* ícono */}
+            <Link href={"/"}>
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            {/* ícono */}
             <Link href={"/user"}>
               Administración
             </Link>

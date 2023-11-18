@@ -4,12 +4,14 @@ import Link from "next/link";
 export default function () {
   return (
     <header className="app-header">
-      <Image
-        src="/TempLogo.png"
-        width={160}
-        height={75}
-        alt="Logo"
-      />
+      <Link href={"/"} className="logo">
+        <Image
+          src="/TempLogo.png"
+          width={160}
+          height={75}
+          alt="Logo"
+        />
+      </Link>
       <Link
         href={"/user/me"} className="user-header">
         <div>

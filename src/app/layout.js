@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       {/* <body className={inter.className}> */}
-      <body className={lato.className}>
+      <body className={lato.className} style={{ height: "100vh" }}>
         <Header />
         <div className="app-container">
           <NavBar />
