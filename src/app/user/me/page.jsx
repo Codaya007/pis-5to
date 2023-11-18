@@ -17,8 +17,6 @@ export default function () {
     status: "active"
   };
 
-
-
   return (
     <div className="normal-form">
       <div className="buttons">
