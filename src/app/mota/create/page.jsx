@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { IP_REGEX } from "@/constants";
 import { useState } from "react";
 
-export default function () {
+export default function MotaForm() {
   const [loading, setLoading] = useState(false);
   const validationSchema = object().shape({
     title: string()

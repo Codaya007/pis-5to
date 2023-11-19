@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { PASSWORD_REGEX } from "@/constants";
 
-export default function () {
+export default function UserForm() {
   const validationSchema = object().shape({
     name: string()
       .required("Nombre requerido"),

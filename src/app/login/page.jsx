@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function () {
+export default function Login() {
   const validationSchema = object().shape({
     email: string()
       .email("Ingrese un email válido")

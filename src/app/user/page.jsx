@@ -38,7 +38,7 @@ export const UserCard = ({ user }) => {
   </article>
 }
 
-export default function () {
+export default function UserDashboard() {
   return (
     <div className="main-container vertical-top">
       <section className="buttons">

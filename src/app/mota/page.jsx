@@ -35,7 +35,7 @@ const MotaCard = ({ title, description, connected }) => {
   </article>
 }
 
-export default function () {
+export default function MotaDashboard() {
   return (
     <div className="main-container vertical-top">
       <section className="buttons">

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function () {
+export default function Header() {
   return (
     <header className="app-header">
       <Link href={"/"} className="logo">
