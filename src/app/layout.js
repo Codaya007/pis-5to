@@ -1,6 +1,6 @@
 import { Lato } from "next/font/google";
 import "./globals.css";
-import Header from "./components/header";
+import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 
 // const inter = Inter({ subsets: ["latin"] });
