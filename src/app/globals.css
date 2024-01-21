@@ -391,6 +391,7 @@ button {
   background-color: white;
   padding: 1rem;
   min-width: 500px;
+  margin-bottom: 1rem;
 }
 
 .history h1 {
@@ -414,6 +415,21 @@ button {
 .history-by-day img {
   width: 30px;
   height: 30px;
+}
+
+.paginator {
+  display: grid;
+  place-items: center;
+}
+.paginator div{
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-direction: row
+}
+.paginator button {
+  padding: 0.313rem 0.625rem;
+  border-radius: 10px;
 }
 
 .align-image {
