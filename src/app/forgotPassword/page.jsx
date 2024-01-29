@@ -16,7 +16,6 @@ export default function Login() {
   const router = useRouter();
   const validationScheme = Yup.object().shape({
     email: Yup.string().required("Ingrese su email"),
-    password: Yup.string().required("Ingrese su contraseña"),
   });
 
   const formOptions = {
@@ -27,19 +26,19 @@ export default function Login() {
   const { errors } = formState;
 
   const sendData = async(data) => {
-    var data = { email: data.email, password: data.password };
-    await enviar("auth/login", data);
-
-    inicio_sesion(data).then((res) => {
-      // console.log(res);
-      if (!estaSesion()) {
-        const errorObtained = res.errorMessage != undefined ? res.errorMessage : res.message;
-        mensajes("Error en inicio de sesion", errorObtained, "error");
-      } else {
-        mensajes("Has ingresado al sistema", "Bienvenido usuario");
-        router.push("/");
+    var data = { email: data.email };
+    enviar("auth/forgot-password", data).then(
+      (res) => {
+        if(res.status == 400){
+          const errorObtained = res.errorMessage != undefined ? res.errorMessage : res.message;
+          mensajes("Información incorrecta", errorObtained, "error");
+        }else{
+          mensajes("Se ha enviado un link para recuperar su contraseña", "Mensaje enviado");
+          router.push("/");
+        }
       }
-    });
+    );
+
   };
 
   return (
@@ -48,7 +47,7 @@ export default function Login() {
         <Image src={"/TempLogo.png"} width={120} height={70} />
       </section>
       <form onSubmit={handleSubmit(sendData)}>
-        <h1 className="title-form">Iniciar sesión</h1>
+        <h1 className="title-form">Recuperar Contraseña</h1>
         <div className="form-item">
           <label className="form-label">Email</label>
           <input
@@ -62,29 +61,11 @@ export default function Login() {
             {errors.email?.message}
           </div>
         </div>
-        <div className="form-item">
-          <label className="form-label">Contrasenia</label>
-          <input
-            {...register("password")}
-            name="password"
-            id="password"
-            type="password"
-            className={`form-control ${errors.password ? "is-invalid" : ""}`}
-          />
-          <div className="alert alert-danger invalid-feedback">
-            {errors.password?.message}
-          </div>
-        </div>
         <input
           className="button-primary"
           type="submit"
-          value="Iniciar sesión"
+          value="Recuperar contraseña"
         />
-        <div>
-          <Link className="link-primary" href={"forgotPassword"}>
-            ¿Has olvidado tu contraseña?
-          </Link>
-        </div>
       </form>
     </div>
   );

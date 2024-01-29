@@ -26,6 +26,5 @@ export const borrarSesion = () => {
 
 export const estaSesion = () => {
   var token = window.sessionStorage.getItem("token");
-  console.log("token ", token);
   return token && (token != "undefined" || token != null || token != "null");
 };

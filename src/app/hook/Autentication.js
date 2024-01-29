@@ -5,7 +5,6 @@ export async function inicio_sesion(data) {
   const sesion = await enviar("auth/login", data);
   const sesionUser = JSON.stringify(sesion.account);
   if (sesion.account && sesion.token) {
-    console.log("dentro de if");
     saveToken(sesion.token);
     //Configurar cookes si fuera necesario
     // save("user", sesion.account);
