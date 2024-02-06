@@ -8,8 +8,10 @@ export async function obtener(recurso, token = "") {
     }
 
     if (token !== "") {
-        header = { ...header, "jwt": token }
+        header = { ...header, "Authorization": `bearer ${token}` }
     }
+
+    console.log({header});
 
     const response = await fetch(BASE_URL + recurso, { cache: 'no-store', headers: header })
 
@@ -24,7 +26,7 @@ export async function enviar(recurso, data, token = "") {
     }
 
     if (token !== "") {
-        header = { ...header, "jwt": token }
+        header = { ...header, "Authorization": `bearer ${token}` }
     }
 
     const response = await fetch(BASE_URL + recurso, {

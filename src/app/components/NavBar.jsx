@@ -28,6 +28,11 @@ export default function () {
               Historial
             </Link>
           </li>
+          <li>
+            <Link href={"/pronosticos"}>
+              Pronóstico
+            </Link>
+          </li>
         </ul>
       </div>
       <button>

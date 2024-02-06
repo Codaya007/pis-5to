@@ -169,6 +169,8 @@ body {
   color: var(--primary-color);
   margin: 0.5rem;
   background-color: white;
+
+  flex-shrink: 0; /** No se encoge si la pantalla se hace más pequeña*/
 }
 
 .user-card div {
@@ -195,7 +197,7 @@ a {
 }
 
 .main-container .buttons {
-  width: 220px;
+  width: 280px;
   color: white;
   margin: 1.5rem 0;
 }
@@ -346,14 +348,40 @@ button {
 }
 
 .cards-by-hour {
-  width: 80%;
+  width: calc(100% - 11rem); 
   margin: auto;
-  /* background-color: red; */
   margin-top: 1rem;
   display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  /* justify-content: space-evenly;
+  flex-wrap: wrap; */
+
+  overflow-x: scroll; 
+  overflow-y: hidden;
+  padding-bottom: 0.3rem; 
 }
+
+
+/** Personalización del scrollbar*/
+.cards-by-hour::-webkit-scrollbar {
+  height: 7px; /* Ancho del scrollbar */
+  
+}
+
+.cards-by-hour::-webkit-scrollbar-track {
+  background-color: var(--background-color); /* Color del fondo del scrollbar */
+}
+
+.cards-by-hour::-webkit-scrollbar-thumb {
+  /* background-color: var(--primary-color-text); */
+  background-color: rgba(115, 119, 127, 0.5);
+  border-radius: 15px; /* Radio de las esquinas del scrollbar */
+}
+
+.cards-by-hour::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(115, 119, 127, 0.7); /* Color del scrollbar al pasar el cursor sobre él */
+}
+
+
 
 .cards-by-hour article {
   max-width: 150px;
@@ -362,6 +390,8 @@ button {
   flex-direction: column;
   padding: 1rem;
   align-items: center;
+
+  flex-shrink: 0; /** No se encoge si la pantalla se hace más pequeña*/
 }
 
 .cards-by-hour article img {
@@ -463,8 +493,13 @@ button {
 }
 
 .search {
-  width: 350px;
-  height: 400px;
+  width: 21.875rem;
+  height: 25rem;
+  transition: height 0.4s ease;
+}
+
+.card.search.form-hidden {
+  height: 7.8125rem;
 }
 
 .search .buttons button {
@@ -478,4 +513,53 @@ button {
 .search .buttons .active {
   background-color: var(--primary-color);
   color: white;
+}
+
+
+.search .buttons :hover{
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/** Loader **/
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* centra verticalmente*/
+  margin: 0 auto;
+}
+
+.loader {
+  border: 5px solid var(--background-color);
+  border-left-color: var(--primary-color);
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  animation: spin 0.75s linear infinite;
+}
+
+.loading-text {
+  color: var(--primary-color);
+  /* margin-top: 20px; */
+  font-size: 20px;
+}
+
+.dot1, .dot2, .dot3 {
+  animation: blink 1.5s infinite;
+  opacity: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
 }
