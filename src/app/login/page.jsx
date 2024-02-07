@@ -33,8 +33,8 @@ export default function Login() {
     inicio_sesion(data).then((res) => {
       // console.log(res);
       if (!estaSesion()) {
-        const errorObtained = res.errorMessage != undefined ? res.errorMessage : res.message;
-        mensajes("Error en inicio de sesion", errorObtained, "error");
+        // const errorObtained = res.msg
+        mensajes("Error en inicio de sesion", res.msg, "error");
       } else {
         mensajes("Has ingresado al sistema", "Bienvenido usuario");
         router.push("/");

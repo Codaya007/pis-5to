@@ -30,9 +30,9 @@ export default function Login() {
     enviar("auth/forgot-password", data).then(
       (res) => {
         if(res.status == 400){
-          const errorObtained = res.errorMessage != undefined ? res.errorMessage : res.message;
-          mensajes("Información incorrecta", errorObtained, "error");
+          mensajes("Información incorrecta", res.msg, "error");
         }else{
+          console.log(res);
           mensajes("Se ha enviado un link para recuperar su contraseña", "Mensaje enviado");
           router.push("/");
         }

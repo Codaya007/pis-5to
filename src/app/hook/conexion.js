@@ -62,9 +62,9 @@ export async function enviarImagenes(recurso, data, key = "") {
   }
 
   var formData = new FormData();
-  formData.append("photo", data[key]);
+  formData.append("image", data[key]);
   for (const key in data) {
-    formData.append("photo", data[key]);
-    console.log(`FormData ${key}: `, formData.get("photo"));
+    formData.append("image", data[key]);
+    console.log(`FormData ${key}: `, formData.get("image"));
   }
 }

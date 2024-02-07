@@ -26,10 +26,9 @@ export default function Login({ params }) {
   const sendData = async (data) => {
     var data = { password: data.password };
     enviar(`auth/recovery-password/${token}`, data).then((res) => {
-      const errorObtained =
-        res.errorMessage != undefined ? res.errorMessage : res.message;
-      if (res.status == 400 || res.errorMessage != undefined)  {
-        mensajes("Información incorrecta", errorObtained, "error");
+      
+      if (res.status == 400 )  {
+        mensajes("Información incorrecta", res.msg, "error");
       } else {
         mensajes("Contraseña cambiada", "Contraseña cambiada");
         router.push("/login");
