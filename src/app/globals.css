@@ -16,6 +16,7 @@
   --primary-color-text: #73777f;
   --accent-color: #135f9b;
   --background-color: #f4f3f7;
+  --danger-color: #dc3545;
 }
 
 html,
@@ -348,23 +349,21 @@ button {
 }
 
 .cards-by-hour {
-  width: calc(100% - 11rem); 
+  width: calc(100% - 11rem);
   margin: auto;
   margin-top: 1rem;
   display: flex;
   /* justify-content: space-evenly;
   flex-wrap: wrap; */
 
-  overflow-x: scroll; 
+  overflow-x: scroll;
   overflow-y: hidden;
-  padding-bottom: 0.3rem; 
+  padding-bottom: 0.3rem;
 }
-
 
 /** Personalización del scrollbar*/
 .cards-by-hour::-webkit-scrollbar {
   height: 7px; /* Ancho del scrollbar */
-  
 }
 
 .cards-by-hour::-webkit-scrollbar-track {
@@ -378,10 +377,13 @@ button {
 }
 
 .cards-by-hour::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(115, 119, 127, 0.7); /* Color del scrollbar al pasar el cursor sobre él */
+  background-color: rgba(
+    115,
+    119,
+    127,
+    0.7
+  ); /* Color del scrollbar al pasar el cursor sobre él */
 }
-
-
 
 .cards-by-hour article {
   max-width: 150px;
@@ -451,11 +453,11 @@ button {
   display: grid;
   place-items: center;
 }
-.paginator div{
+.paginator div {
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  flex-direction: row
+  flex-direction: row;
 }
 .paginator button {
   padding: 0.313rem 0.625rem;
@@ -515,8 +517,7 @@ button {
   color: white;
 }
 
-
-.search .buttons :hover{
+.search .buttons :hover {
   background-color: var(--primary-color);
   color: white;
 }
@@ -547,7 +548,9 @@ button {
   font-size: 20px;
 }
 
-.dot1, .dot2, .dot3 {
+.dot1,
+.dot2,
+.dot3 {
   animation: blink 1.5s infinite;
   opacity: 0;
 }
@@ -562,4 +565,8 @@ button {
   50% {
     opacity: 1;
   }
+}
+.validation-error {
+  color: var(--danger-color);
+  font-size: 0.7rem;
 }
