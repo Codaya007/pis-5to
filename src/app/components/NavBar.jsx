@@ -4,6 +4,7 @@ import { borrarSesion } from "../hook/SesionUtilClient";
 import mensajes from "./Mensajes";
 import { useRouter } from "next/navigation";
 
+<<<<<<< HEAD
 export default function () {
   const router = useRouter();
   const salir = async () => {
@@ -14,6 +15,9 @@ export default function () {
     router.refresh();
   }
   
+=======
+export default function NavBar() {
+>>>>>>> af1bba38d12871fa8bafca43b3f86fe68e8096e3
   return (
     <nav className="navbar">
       <div>

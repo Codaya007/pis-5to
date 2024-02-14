@@ -93,7 +93,7 @@ const FORMAT_INDEX_DAY = {
   1: "Ayer",
 }
 
-export default function () {
+export default function History() {
   return (
     <div className="main-container vertical-top history-page">
       <section className="history">

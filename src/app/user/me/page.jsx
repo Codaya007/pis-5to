@@ -12,7 +12,7 @@ export const FORMAT_STATUS_DICTIONARY = {
   blocked: "Bloqueado"
 };
 
-export default function () {
+export default function Profile() {
   const user = {
     status: "active"
   };

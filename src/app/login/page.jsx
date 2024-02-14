@@ -26,7 +26,7 @@ export default function Login() {
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const sendData = async(data) => {
+  const sendData = async (data) => {
     var data = { email: data.email, password: data.password };
     await enviar("auth/login", data);
 
