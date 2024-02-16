@@ -1,33 +1,40 @@
+"use client";
+import { useAuth } from "@/context/AuthContext";
+import { deleteNode, getAllNodes } from "@/services/nodes.service";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import mensajeConfirmacion from "../components/MensajeConfirmacion";
 
-export const motasExample = [
-  {
-    id: 1,
-    title: "Mota 1",
-    description: "Mota de temperatura",
-    ip: "129.1.1.122",
-    connected: true
-  },
-  {
-    id: 2,
-    title: "Mota 2",
-    description: "Mota de humedad",
-    ip: "129.1.1.128",
-    connected: true
-  },
-  {
-    id: 3,
-    title: "Mota 3",
-    description: "Mota de viento",
-    ip: "129.1.1.90",
-    connected: false
-  },
-];
+const MotaCard = ({ tag, detail: description, ip, estado: connected, id, token, refreshMotas }) => {
+  const router = useRouter();
 
-const MotaCard = ({ title, description, connected }) => {
+  const handleUpdateMota = () => {
+    router.push(`/mota/update/${id}`);
+  }
+
+  const handleDeleteMota = async () => {
+    try {
+      const confirmation = await mensajeConfirmacion("Esta acción es irreversible. ¿Desea continuar?", "Confirmación", "warning");
+
+      if (confirmation) {
+        await deleteNode(id, token);
+
+        await refreshMotas();
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
   return <article className="user-card">
-    <h2>{title}</h2>
+    <div className="buttons">
+      <button onClick={handleUpdateMota}>Editar</button>
+      <button style={{ color: "#a31818" }} onClick={handleDeleteMota}>Eliminar</button>
+    </div>
+    <h2>{tag}</h2>
     <p className="text-primary">{description}</p>
+    <p className="text-primary">IP: {ip}</p>
     <div className="container-dot">
       <span className="dot" style={{ backgroundColor: connected ? "green" : "red" }}></span>
       <p>{connected ? "Conectado" : "Desconectado"}</p>
@@ -35,7 +42,25 @@ const MotaCard = ({ title, description, connected }) => {
   </article>
 }
 
-export default function () {
+export default function MotaDashboard() {
+  const { token } = useAuth();
+  const [nodes, setNodes] = useState([]);
+
+  const fetchNodes = async () => {
+    const { results: allNodes } = await getAllNodes(token)
+
+    setNodes(allNodes);
+  }
+
+  useEffect(() => {
+    if (token) {
+
+      fetchNodes()
+    } else {
+      setNodes([])
+    }
+  }, [token]);
+
   return (
     <div className="main-container vertical-top">
       <section className="buttons">
@@ -45,7 +70,7 @@ export default function () {
       </section>
       <section className="items-container">
         {
-          motasExample.map(mota => <MotaCard {...mota} key={mota.id} />)
+          nodes.map(mota => <MotaCard {...mota} token={token} refreshMotas={fetchNodes} key={mota.id} />)
         }
       </section>
     </div>

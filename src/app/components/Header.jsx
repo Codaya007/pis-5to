@@ -1,7 +1,11 @@
+"use client";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function () {
+export default function Header() {
+  const { user } = useAuth();
+
   return (
     <header className="app-header">
       <Link href={"/"} className="logo">
@@ -12,14 +16,14 @@ export default function () {
           alt="Logo"
         />
       </Link>
-      <Link
+      {user && <Link
         href={"/user/me"} className="user-header">
         <div>
-          <h2>Viviana Calva</h2>
+          <h2>{user.name} {user.lastname}</h2>
           <h3>Administrador</h3>
         </div>
-        <img src={"https://avatars.githubusercontent.com/u/68254166?v=4"} alt="User photo" />
-      </Link>
+        <img src={user.avatar || "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg"} alt="User photo" />
+      </Link>}
     </header>
   );
 }

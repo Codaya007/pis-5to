@@ -1,7 +1,7 @@
 // PaginationControls.js
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { LIMIT_PAGINATOR } from '../hooks/Constants';
+import { LIMIT_PAGINATOR } from '../../hooks/Constants';
 
 const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage }) => {
   const router = useRouter();

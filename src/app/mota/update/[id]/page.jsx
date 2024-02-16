@@ -4,9 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { BOOLEAN_DICTIONARY, IP_REGEX, UUID_REGEX } from "@/constants";
 import { useEffect, useState } from "react";
-import { createNode } from "@/services/nodes.service";
+import { getNodeById, updateNode } from "@/services/nodes.service";
 import mensajes from "@/app/components/Mensajes";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getAllRoles } from "@/services/roles.service";
 import { getAllSensors } from "@/services/sensors.service";
@@ -25,28 +25,26 @@ const validationSchema = object().shape({
 
 export default function MotaForm() {
   const router = useRouter();
-  // const [loading, setLoading] = useState(false);
   const formOptions = {
     resolver: yupResolver(validationSchema),
     mode: "onChange",
   };
-  const { register, handleSubmit, formState, watch } = useForm(formOptions)
+  const { register, handleSubmit, formState, reset } = useForm(formOptions)
   const { errors } = formState;
   const { token } = useAuth();
   const [roles, setRoles] = useState([]);
   const [sensors, setSensors] = useState([]);
+  const { id } = useParams();
 
-  const handleCreateMota = async (data) => {
+  const handleUpdateMota = async (data) => {
     try {
-      data.estado = BOOLEAN_DICTIONARY[data.estado];
+      await updateNode(id, data, token);
 
-      await createNode(data, token);
-
-      mensajes("Exito", "Mota registrada exitosamente");
+      mensajes("Exito", "Mota actualizada exitosamente");
       router.push("/mota");
     } catch (error) {
       console.log(error?.response?.data || error);
-      mensajes("Error", error.response?.data?.msg || "No se ha podido crear la mota", "error");
+      mensajes("Error", error.response?.data?.msg || "No se ha podido actualizar la mota", "error");
     }
   }
 
@@ -62,17 +60,31 @@ export default function MotaForm() {
     setSensors(allSensors)
   }
 
+  const fetchMota = async () => {
+    const { results } = await getNodeById(id, token);
+
+    reset({
+      tag: results.tag,
+      detail: results.detail,
+      ip: results.ip,
+      sensor: results.sensor,
+      rol: results.rol
+    });
+  }
+
   useEffect(() => {
     if (token) {
       fetchSensors();
       fetchRoles();
+      fetchMota();
     }
   }, [token]);
 
+
   return (
     <div className="normal-form">
-      <form onSubmit={handleSubmit(handleCreateMota)}>
-        <h1 className="title-form">Crear mota</h1>
+      <form onSubmit={handleSubmit(handleUpdateMota)}>
+        <h1 className="title-form">Actualizar mota</h1>
         <div className="form-item">
           <label>Título/Tag</label>
           <input {...register("tag")} type="text" />
@@ -132,22 +144,7 @@ export default function MotaForm() {
           </select>
           {errors.estado && <span className="validation-error">{errors.estado.message}</span>}
         </div>
-        {/* <div className="form-item mota-form-state">
-          <div>
-            <label>Estado</label>
-            <div className="container-dot">
-              <div
-                className={"dot"}
-                style={{ backgroundColor: connected ? "green" : "red" }}
-              ></div>
-              {connected ? "Conectado" : "Desconectado"}
-            </div>
-          </div>
-          <button onClick={handleClickRefresh}>{
-            loading ? "Cargando..." : "Refrescar"}
-          </button>
-        </div> */}
-        <input className="button-primary" type="submit" value="Crear" />
+        <input className="button-primary" type="submit" value="Guardar" />
       </form>
     </div>
   );

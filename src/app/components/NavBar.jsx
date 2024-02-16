@@ -1,7 +1,21 @@
+"use client";
 import Link from "next/link";
+import mensajes from "./Mensajes";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
-export default function () {
-  return (
+export default function NavBar() {
+  const { user, logoutUser } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logoutUser()
+    mensajes("Gracias", "Hasta la proxima");
+    router.push('/login');
+    router.refresh();
+  }
+
+  return (user ?
     <nav className="navbar">
       <div>
         <h3>Panel de control</h3>
@@ -15,12 +29,17 @@ export default function () {
           <li>
             {/* ícono */}
             <Link href={"/user"}>
-              Administración
+              Usuarios
             </Link>
           </li>
           <li>
             <Link href={"/mota"}>
-              Gestionar motas
+              Motas
+            </Link>
+          </li>
+          <li>
+            <Link href={"/sensor"}>
+              Sensores
             </Link>
           </li>
           <li>
@@ -35,10 +54,10 @@ export default function () {
           </li>
         </ul>
       </div>
-      <button>
-        {/* ícono */}
+      <button type="button" onClick={handleLogout}>
         Cerrar sesión
       </button>
-    </nav>
+    </nav> :
+    <></>
   );
 }

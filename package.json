@@ -9,11 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.44",
+    "@hookform/resolvers": "^3.3.4",
+    "axios": "^1.6.7",
+    "moment-timezone": "^0.5.45",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
-    "sweetalert2": "^11.10.4"
+    "react-hook-form": "^7.50.1",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.10.5",
+    "yup": "^1.3.3"
   },
   "devDependencies": {
     "eslint": "^8",
