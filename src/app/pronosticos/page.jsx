@@ -186,6 +186,7 @@ export default function Pronosticos({ searchParams }) {
                         searchParams={searchParams}
                         hasNextPage={end < pronosticos?.totalCount}
                         hasPrevPage={start > 0}
+                        baseUrlRedirect={"pronosticos"}
                     />
                 </section>
             )}

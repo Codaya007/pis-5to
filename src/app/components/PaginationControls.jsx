@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation'
 import { LIMIT_PAGINATOR } from '../../hooks/Constants';
 
-const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage }) => {
+const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage, baseUrlRedirect }) => {
   const router = useRouter();
 
   let page = searchParams['page'] || '1';
@@ -30,7 +30,7 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
         className='bg-blue-500 text-white p-1'
         disabled={!hasNextPage}
         onClick={() => {
-          router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) + 1}`);
+          router.push(`/${baseUrlRedirect}?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) + 1}`);
         }}>
         Siguiente
       </button>
