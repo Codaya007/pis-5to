@@ -13,5 +13,7 @@ export const WARNING = 'warning'
 export const INFO = 'info'
 export const QUESTION = 'question'
 
+export const FIXED = 0
+
 
 export const TIME_OUT = 2000

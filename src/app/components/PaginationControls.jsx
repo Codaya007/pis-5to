@@ -11,12 +11,13 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
   if (page > total) {
     router.push(`/prueba?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${total}`);
   }
-  
+
 
   return (
-    <div className='flex gap-2'>
+    <div style={{ display: 'flex', flexDirection: 'row' , gap: '1', alignItems: 'center', marginBottom:'1rem', justifyContent: 'center', width: '100%'}}>
       <button
-        className='bg-blue-500 text-white p-1'
+        className='simple-button'
+        style={{ marginRight: '1rem' }} 
         disabled={!hasPrevPage}
         onClick={() => {
           router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) - 1}`);
@@ -30,7 +31,8 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
       </div>
 
       <button
-        className='bg-blue-500 text-white p-1'
+        className='simple-button'
+        style={{ marginLeft: '1rem' }} 
         disabled={!hasNextPage}
         onClick={() => {
           router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) + 1}`);

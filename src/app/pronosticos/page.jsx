@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 
 import PaginationControls from "../components/PaginationControls";
-import { LIMIT_PAGINATOR, BTN_FILTER, BTN_LAST_3_DAYS, ERROR, FIRST_PAG, SUCCESS, BTN_ALL, TIME_OUT } from "../hooks/Constants";
+import { LIMIT_PAGINATOR, BTN_FILTER, BTN_LAST_3_DAYS, ERROR, FIRST_PAG, SUCCESS, BTN_ALL, TIME_OUT, FIXED } from "../hooks/Constants";
 import { obtener } from '@/app/hooks/Api';
 import Loader from '../components/Loader';
 import { alertMessage } from '../components/Message';
+import NotData from '../components/NotData';
 
 const moment = require('moment-timezone');
 
@@ -18,13 +19,16 @@ export default function ({ searchParams }) {
     const [toDate, setToDate] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [current_active_button, setCurrent_active_button] = useState(BTN_ALL);
+    const [hasData, setHasData] = useState(false);
 
     const page = searchParams['page'] < 1 ? '1' : searchParams['page'];
     const limit = LIMIT_PAGINATOR
     const populate = 'true'
 
-    const fechainicio = searchParams['inicio'] ?? '2024-01-21'
-    const fechafin = searchParams['fin'] ?? '2024-01-28'
+    const todayDate = moment().format('YYYY-MM-DD');
+    const dateInit = '2024-01-21'
+    const fechainicio = searchParams['inicio'] ?? dateInit
+    const fechafin = searchParams['fin'] ?? todayDate
 
     const start = (parseInt(page) - 1) * limit
     const end = start + limit
@@ -32,13 +36,12 @@ export default function ({ searchParams }) {
 
     const handleGetLast3Days = () => {
         const threeDaysAgoDate = moment().subtract(3, 'days').format('YYYY-MM-DD');
-        const todayDate = moment().format('YYYY-MM-DD');
 
-        router.push(`pronosticos?inicio=${threeDaysAgoDate}&fin=${todayDate}&page=${FIRST_PAG}`);
+        router.push(`pronosticos?inicio=${threeDaysAgoDate}&fin=${fechafin}&page=${FIRST_PAG}`);
     }
 
     const setDefaultURL = () => {
-        router.push(`pronosticos?inicio=2024-01-20&fin=2024-01-28&page=${FIRST_PAG}`);
+        router.push(`pronosticos?inicio=${dateInit}&fin=${todayDate}&page=${FIRST_PAG}`);
     }
 
     const handleClearFields = () => {
@@ -67,30 +70,46 @@ export default function ({ searchParams }) {
             }
 
             // ! token, recordar obtener el token del localstorage
-            let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWIxYTRjOWY3ZGJiMjVjMTVmNDk1OSIsImlhdCI6MTcwNzE2ODQyOSwiZXhwIjoxNzA3NzczMjI5fQ.VIQjGAEa_SP53mFrPa2TsQh0ZSngS4hiukvpukilo3Q"
+            let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWIxYTRjOWY3ZGJiMjVjMTVmNDk1OSIsImlhdCI6MTcwNzg3MDM3NiwiZXhwIjoxNzA4NDc1MTc2fQ.EXNDB-qiFyCvNLzQduSp6PyKvaZQnH4YvZV9tkfhvew"
 
-            let response = await obtener(`pronostic/${fechainicio}/${fechafin}?limit=${LIMIT_PAGINATOR}&page=${page}&populate=${populate}`, tkn);
+            let response = await obtener(`pronostics/${fechainicio}/${fechafin}?limit=${LIMIT_PAGINATOR}&page=${page}&populate=${populate}`, tkn);
+            console.log({ response });
+
             if (response.msg !== "OK") {
                 alertMessage('Ocurrio un error', pronosticos.msg, ERROR)
-            } else if (response.totalCount == 0) {
-                alertMessage('No hay pronósticos', 'No existen pronósticos en el rango de fechas seleccionado', SUCCESS)
-                setTimeout(() => {
-                    setDefaultURL()
-                }, TIME_OUT);
+                setHasData(true)
             } else {
-                response.data.map((element) => {
+                if (response.totalCount == 0) {
+                    alertMessage('No hay pronósticos', 'No existen pronósticos en el rango de fechas seleccionado', SUCCESS)
+                }
+                //? Formateo de los elementos
+                //* Correción de la fecha
+                response.results.map((element) => {
                     element.dateTime = moment(element.dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]');
+                    // element.dateTime = moment(element.dateTime).add(2, 'hours').add(28, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
+                    element.temperature = element.temperature.toFixed(FIXED);
+                    element.humidity = element.humidity.toFixed(FIXED);
+                    element.barometricPressure = element.barometricPressure.toFixed(FIXED);
                     return element;
                 })
 
-                let diccionario = {}
+                setHasData(true)
 
-                response.data.forEach(e => {
+                // Agrupar los elementos por fecha
+                let diccionario = {}
+                response.results.forEach(e => {
                     const fecha = e.dateTime.split('T')[0]
                     diccionario[fecha] = diccionario[fecha] ? [...diccionario[fecha], e] : [e];
                 });
 
-                response.data = diccionario
+                // Ordenar los elementos descendentemente
+                for (let clave in diccionario) {
+                    diccionario[clave] = diccionario[clave].reverse()
+                }
+
+                response.results = diccionario
+
+                // console.log({response});
 
                 setPronosticos(response);
             }
@@ -103,31 +122,32 @@ export default function ({ searchParams }) {
 
     return (
         <div className="main-container vertical-top history-page">
-            {pronosticos && pronosticos.data && (
+            {pronosticos && pronosticos.results && (
                 <section>
                     <section className="history">
                         <h1>Historial de pronósticos</h1>
                         {
-                            Object.keys(pronosticos.data).map((fecha, i) => {
+                            Object.keys(pronosticos.results).map((fecha, i) => {
                                 return (
                                     <section className="history-by-day" key={i}>
                                         <h2>{fecha}</h2>
-                                        {pronosticos.data[fecha].map((pronostico, i) => {
+                                        {pronosticos.results[fecha].map((pronostico, j) => {
                                             return (
-                                                <table>
-                                                    <tbody>
+                                                <table key={j}>
+                                                    <tbody key={j}>
                                                         {
-                                                            <tr key={i}>
+                                                            <tr key={j}>
                                                                 <td>{pronostico.dateTime.split('T')[1].slice(0, 5)}</td>
                                                                 <td className="align-image">
-                                                                    <img src={pronostico.pronostic.image} alt={pronostico.pronostic.weatherType} />
+                                                                    {/* Colocar IMAGEN */}
+                                                                    {/* <img src={pronostico.pronostic.image} alt={pronostico.pronostic.weatherType} />
                                                                     <p>
                                                                         {pronostico.pronostic.weatherType}
-                                                                    </p>
+                                                                    </p> */}
                                                                 </td>
                                                                 <td>{pronostico.humidity}%</td>
                                                                 <td>{pronostico.temperature} °C</td>
-                                                                <td>{pronostico.windSpeed} Km/h</td>
+                                                                {/* <td>{pronostico.windSpeed} Km/h</td> */}
                                                                 <td>{pronostico.barometricPressure} hPa</td>
                                                             </tr>
                                                         }
@@ -151,7 +171,7 @@ export default function ({ searchParams }) {
                 </section>
             )}
 
-            {pronosticos && pronosticos.data && (
+            {pronosticos && pronosticos.results && (
                 <section className={`card search ${current_active_button === BTN_LAST_3_DAYS || current_active_button === BTN_ALL ? 'form-hidden' : ''}`}>
                     <h2>Búsqueda</h2>
                     <div className="buttons">
@@ -202,9 +222,13 @@ export default function ({ searchParams }) {
                 </section>
             )}
             {/* Componente del loader  */}
-            {pronosticos.data == null && (
+            {pronosticos.results == null && hasData == false && (
                 <Loader></Loader>
             )}
+            {pronosticos.results == null && hasData == true && (
+                <NotData volverFunction={setDefaultURL}></NotData>
+            )}
+
         </div >
     );
 }

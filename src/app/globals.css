@@ -552,6 +552,18 @@ button {
   opacity: 0;
 }
 
+.accentColor {
+  color: var(--accent-color);
+}
+
+.simple-button {
+  color: var(--primary-color);
+  background-color: transparent;
+  text-decoration: underline;
+  border: none;
+}
+
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

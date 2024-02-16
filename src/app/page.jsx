@@ -49,35 +49,35 @@ const hoursExample = [
 export default function Home() {
   const [pronosticos, setPronosticos] = useState({});
 
-  //! Cambiar por el día actual
-  const fecha = '2024-01-21'
-  // const fechaActual = moment().format('YYYY-MM-DD');
+  const fechaActual = moment().format('YYYY-MM-DD');
 
   useEffect(() => {
     const getPronostics = async () => {
       // ! token, recordar obtener el token del localstorage
       let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWIxYTRjOWY3ZGJiMjVjMTVmNDk1OSIsImlhdCI6MTcwNzE2ODQyOSwiZXhwIjoxNzA3NzczMjI5fQ.VIQjGAEa_SP53mFrPa2TsQh0ZSngS4hiukvpukilo3Q"
 
-      let response = await obtener(`pronostic/${fecha}/${fecha}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
+      let response = await obtener(`pronostics/${fechaActual}/${fechaActual}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
 
       if (response.msg !== "OK") {
         alertMessage('Ocurrio un error', pronosticos.msg, ERROR)
       } else if (response.totalCount == 0) {
         alertMessage('No hay pronósticos', 'No existen pronósticos en el rango de fechas seleccionado', SUCCESS)
       } else {
-        response.data.map((element) => {
-          element.dateTime = moment(element.dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]');
+        //* Formateo de la fecha
+        response.results.map((element) => {
+          // element.dateTime = moment(element.dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]');
+          element.dateTime = moment(element.dateTime).add(2, 'hours').add(28, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
           return element;
         })
 
         let diccionario = {}
 
-        response.data.forEach(e => {
+        response.results.forEach(e => {
           const fecha = e.dateTime.split('T')[0]
           diccionario[fecha] = diccionario[fecha] ? [...diccionario[fecha], e] : [e];
         });
 
-        response.data = diccionario
+        response.results = diccionario
 
         console.log({ response });
 
@@ -130,10 +130,10 @@ export default function Home() {
           </ul>
         </div>
       </section>
-      {pronosticos && pronosticos.data != null && (
+      {pronosticos && pronosticos.results != null && (
         <section className="cards-by-hour">
-          {Object.keys(pronosticos.data).map((fecha) => {
-            const data = [...pronosticos.data[fecha]];
+          {Object.keys(pronosticos.results).map((fecha) => {
+            const data = [...pronosticos.results[fecha]];
             data.reverse();
             return (
               data.map((element, i) => {
