@@ -1,12 +1,9 @@
 'use client';
-
 import { useState, useEffect } from 'react';
-
-import Image from "next/image";
-import { obtener } from './hooks/Api';
-import { ERROR, LIMIT_PAGINATOR, SUCCESS } from './hooks/Constants';
+import { obtener } from '../hooks/Api';
+import { ERROR, LIMIT_PAGINATOR, SUCCESS } from '../hooks/Constants';
 import { alertMessage } from './components/Message';
-import Loader from './components/Loader';
+import { useAuth } from '@/context/AuthContext';
 
 const moment = require('moment-timezone');
 
@@ -47,6 +44,7 @@ const hoursExample = [
 ];
 
 export default function Home() {
+  const { loginUser, user } = useAuth();
   const [pronosticos, setPronosticos] = useState({});
 
   //! Cambiar por el día actual
@@ -89,6 +87,15 @@ export default function Home() {
 
     //TODO mostar los pronosticos en el carrusel de pronosticos
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      const userData = localStorage.getItem("user")
+      const token = localStorage.getItem("token")
+
+      loginUser(JSON.parse(userData), token)
+    }
+  }, [localStorage.user]);
 
   return (
     <main className="main-container">

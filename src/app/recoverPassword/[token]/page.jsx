@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { enviar } from "../../hook/conexion";
+import { enviar } from "../../../hooks/hook/conexion";
 import mensajes from "../../components/Mensajes";
 import { useRouter } from "next/navigation";
 
@@ -26,8 +26,8 @@ export default function Login({ params }) {
   const sendData = async (data) => {
     var data = { password: data.password };
     enviar(`auth/recovery-password/${token}`, data).then((res) => {
-      
-      if (res.status == 400 )  {
+
+      if (res.status == 400) {
         mensajes("Información incorrecta", res.msg, "error");
       } else {
         mensajes("Contraseña cambiada", "Contraseña cambiada");

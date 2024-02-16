@@ -1,24 +1,21 @@
 "use client";
 import Link from "next/link";
-import { borrarSesion } from "../hook/SesionUtilClient";
 import mensajes from "./Mensajes";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
-<<<<<<< HEAD
-export default function () {
+export default function NavBar() {
+  const { user, logoutUser } = useAuth();
   const router = useRouter();
-  const salir = async () => {
-    // Cookie.remove("my-token");
-    await borrarSesion();
+
+  const handleLogout = () => {
+    logoutUser()
     mensajes("Gracias", "Hasta la proxima");
-    router.push('/');
+    router.push('/login');
     router.refresh();
   }
-  
-=======
-export default function NavBar() {
->>>>>>> af1bba38d12871fa8bafca43b3f86fe68e8096e3
-  return (
+
+  return (user ?
     <nav className="navbar">
       <div>
         <h3>Panel de control</h3>
@@ -32,12 +29,17 @@ export default function NavBar() {
           <li>
             {/* ícono */}
             <Link href={"/user"}>
-              Administración
+              Usuarios
             </Link>
           </li>
           <li>
             <Link href={"/mota"}>
-              Gestionar motas
+              Motas
+            </Link>
+          </li>
+          <li>
+            <Link href={"/sensor"}>
+              Sensores
             </Link>
           </li>
           <li>
@@ -52,11 +54,10 @@ export default function NavBar() {
           </li>
         </ul>
       </div>
-      <button type="button" onClick={salir}>
-        
-        {/* ícono */}
+      <button type="button" onClick={handleLogout}>
         Cerrar sesión
       </button>
-    </nav>
+    </nav> :
+    <></>
   );
 }

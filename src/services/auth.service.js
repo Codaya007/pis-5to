@@ -9,8 +9,8 @@ export const login = async (body) => {
   return loginResponse;
 };
 
-export const register = async (body, token) => {
-  const url = `${API_BASEURL}/auth/register`;
+export const registerUser = async (body, token) => {
+  const url = `${API_BASEURL}/accounts`;
 
   const { data: registerResponse } = await axios.post(url, body, {
     headers: { Authorization: `Bearer ${token}` },

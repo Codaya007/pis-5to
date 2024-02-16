@@ -1,22 +1,22 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-
-import { enviar } from "../hook/conexion";
 import mensajes from "../components/Mensajes";
-import { inicio_sesion } from "../hook/Autentication";
 import { useRouter } from "next/navigation";
-import { estaSesion } from "../hook/SesionUtilClient";
+import { login } from "../../services/auth.service"
+import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
   const router = useRouter();
+  const { loginUser, user } = useAuth()
+
   const validationScheme = Yup.object().shape({
-    email: Yup.string().required("Ingrese su email"),
-    password: Yup.string().required("Ingrese su contraseña"),
+    email: Yup.string().required("Ingrese su email").email("Debe ser un email válido"),
+    password: Yup.string().required("Ingrese su contraseña")
+    // .min(10, "Debe tener al menos 10 caracteres"),
   });
 
   const formOptions = {
@@ -27,19 +27,18 @@ export default function Login() {
   const { errors } = formState;
 
   const sendData = async (data) => {
-    var data = { email: data.email, password: data.password };
-    await enviar("auth/login", data);
+    try {
+      const { results, token } = await login(data)
 
-    inicio_sesion(data).then((res) => {
-      // console.log(res);
-      if (!estaSesion()) {
-        // const errorObtained = res.msg
-        mensajes("Error en inicio de sesion", res.msg, "error");
-      } else {
-        mensajes("Has ingresado al sistema", "Bienvenido usuario");
-        router.push("/");
-      }
-    });
+      // Lo guardo en el contexto global
+      loginUser(results, token);
+
+      mensajes("Has ingresado al sistema", "Bienvenido usuario");
+      router.push("/");
+    } catch (error) {
+      console.log(error?.response?.data);
+      mensajes("Error en inicio de sesion", error.response?.data?.msg || "No se ha podido iniciar sesión", "error");
+    }
   };
 
   return (
@@ -58,12 +57,12 @@ export default function Login() {
             type="text"
             className={`form-control ${errors.email ? "is-invalid" : ""}`}
           />
-          <div className="alert alert-danger invalid-feedback">
+          <div className="validation-error">
             {errors.email?.message}
           </div>
         </div>
         <div className="form-item">
-          <label className="form-label">Contrasenia</label>
+          <label className="form-label">Contraseña</label>
           <input
             {...register("password")}
             name="password"
@@ -71,7 +70,7 @@ export default function Login() {
             type="password"
             className={`form-control ${errors.password ? "is-invalid" : ""}`}
           />
-          <div className="alert alert-danger invalid-feedback">
+          <div className="validation-error">
             {errors.password?.message}
           </div>
         </div>

@@ -6,11 +6,11 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { enviar } from "../hook/conexion";
+import { enviar } from "../../hooks/hook/conexion";
 import mensajes from "../components/Mensajes";
-import { inicio_sesion } from "../hook/Autentication";
+import { inicio_sesion } from "../../hooks/hook/Autentication";
 import { useRouter } from "next/navigation";
-import { estaSesion } from "../hook/SesionUtilClient";
+import { estaSesion } from "../../hooks/hook/SesionUtilClient";
 
 export default function Login() {
   const router = useRouter();
@@ -25,13 +25,13 @@ export default function Login() {
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const sendData = async(data) => {
+  const sendData = async (data) => {
     var data = { email: data.email };
     enviar("auth/forgot-password", data).then(
       (res) => {
-        if(res.status == 400){
+        if (res.status == 400) {
           mensajes("Información incorrecta", res.msg, "error");
-        }else{
+        } else {
           console.log(res);
           mensajes("Se ha enviado un link para recuperar su contraseña", "Mensaje enviado");
           router.push("/");

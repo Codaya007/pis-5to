@@ -1,8 +1,8 @@
 import axios from "axios";
 const { API_BASEURL } = require("@/constants");
 
-export const createDocument = async (body, token) => {
-  const url = `${API_BASEURL}/documents`;
+export const createRole = async (body, token) => {
+  const url = `${API_BASEURL}/roles`;
 
   const { data } = await axios.post(url, body, {
     headers: { Authorization: `Bearer ${token}` },
@@ -11,8 +11,8 @@ export const createDocument = async (body, token) => {
   return data;
 };
 
-export const updateDocument = async (id, body, token) => {
-  const url = `${API_BASEURL}/documents/${id}`;
+export const updateRole = async (id, body, token) => {
+  const url = `${API_BASEURL}/roles/${id}`;
 
   const { data } = await axios.patch(url, body, {
     headers: { Authorization: `Bearer ${token}` },
@@ -21,8 +21,8 @@ export const updateDocument = async (id, body, token) => {
   return data;
 };
 
-export const deleteDocument = async (id, token) => {
-  const url = `${API_BASEURL}/documents/${id}`;
+export const deleteRole = async (id, token) => {
+  const url = `${API_BASEURL}/roles/${id}`;
 
   const { data } = await axios.delete(url, {
     headers: { Authorization: `Bearer ${token}` },
@@ -31,8 +31,8 @@ export const deleteDocument = async (id, token) => {
   return data;
 };
 
-export const getAllDocuments = async (token, owner) => {
-  const url = `${API_BASEURL}/documents?owner=${owner}`;
+export const getAllRoles = async (token, owner) => {
+  const url = `${API_BASEURL}/roles`;
 
   const { data } = await axios.get(url, {
     headers: { Authorization: `Bearer ${token}` },
@@ -41,8 +41,8 @@ export const getAllDocuments = async (token, owner) => {
   return data;
 };
 
-export const getDocumentById = async (id, token) => {
-  const url = `${API_BASEURL}/documents/${id}`;
+export const getRoleById = async (id, token) => {
+  const url = `${API_BASEURL}/roles/${id}`;
 
   const { data } = await axios.get(url, {
     headers: { Authorization: `Bearer ${token}` },

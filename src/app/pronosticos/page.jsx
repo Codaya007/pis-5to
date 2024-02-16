@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 
 import PaginationControls from "../components/PaginationControls";
-import { LIMIT_PAGINATOR, BTN_FILTER, BTN_LAST_3_DAYS, ERROR, FIRST_PAG, SUCCESS, BTN_ALL, TIME_OUT } from "../hooks/Constants";
-import { obtener } from '@/app/hooks/Api';
+import { LIMIT_PAGINATOR, BTN_FILTER, BTN_LAST_3_DAYS, ERROR, FIRST_PAG, SUCCESS, BTN_ALL, TIME_OUT } from "../../hooks/Constants";
+import { obtener } from '@/hooks/Api';
 import Loader from '../components/Loader';
 import { alertMessage } from '../components/Message';
 

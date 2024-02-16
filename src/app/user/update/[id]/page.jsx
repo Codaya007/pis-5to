@@ -2,10 +2,11 @@
 import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { registerUser } from "@/services/auth.service";
-import mensajes from "../../components/Mensajes";
-import { useRouter } from "next/navigation";
+import mensajes from "../../../components/Mensajes";
+import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
+import { getUserById, updateUser } from "@/services/user.service";
 
 const validationSchema = object().shape({
   name: string()
@@ -14,43 +15,54 @@ const validationSchema = object().shape({
   email: string()
     .email("Ingrese un email válido")
     .required("Email requerido"),
-  password: string()
-    .required("Contraseña requerida")
-    .matches(/[a-z]/, 'Debe contener al menos una letra minúscula')
-    .matches(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
-    .matches(/[0-9]/, 'Debe contener al un número')
-    .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener al menos un caracter especial')
-    .min(8, "La contraseña debe tener al menos 8 caracteres"),
   state: string().is(["ACTIVA", "INACTIVA", "BLOQUEADA"], "Estado no válido")
     .required("Estatus requerido")
 });
 
 export default function UserForm() {
   const router = useRouter();
+  const { id } = useParams();
   const { token } = useAuth();
   const formOptions = {
     resolver: yupResolver(validationSchema),
     mode: "onChange",
   };
-  const { register, handleSubmit, formState } = useForm(formOptions)
+  const { register, handleSubmit, formState, reset } = useForm(formOptions)
   const { errors } = formState;
 
-  const handleCreateUser = async (data) => {
+  const handleUpdateUser = async (data) => {
     try {
-      await registerUser(data, token);
+      await updateUser(id, data, token);
 
-      mensajes("Exito", "Usuario registrado exitosamente");
+      mensajes("Exito", "Usuario actualizado exitosamente");
       router.push("/user");
     } catch (error) {
       console.log(error?.response?.data || error);
-      mensajes("Error", error.response?.data?.msg || "No se ha podido crear el usuario", "error");
+      mensajes("Error", error.response?.data?.msg || "No se ha podido actualizar el usuario", "error");
     }
   }
 
+  const fetchUser = async () => {
+    const { results } = await getUserById(id, token);
+
+    reset({
+      name: results.name,
+      lastname: results.lastname,
+      email: results.email,
+      state: results.state
+    });
+  }
+
+  useEffect(() => {
+    if (token) {
+      fetchUser();
+    }
+  }, [token]);
+
   return (
     <div className="normal-form">
-      < form onSubmit={handleSubmit(handleCreateUser)} >
-        <h1 className="title-form">Crear nuevo usuario</h1>
+      < form onSubmit={handleSubmit(handleUpdateUser)} >
+        <h1 className="title-form">Actualizar usuario</h1>
         <div className="form-item">
           <label>Nombre</label>
           <input {...register("name")} type="text" />
@@ -67,11 +79,6 @@ export default function UserForm() {
           {errors.email && <span className="validation-error">{errors.email.message}</span>}
         </div>
         <div className="form-item">
-          <label>Contraseña</label>
-          <input  {...register("password")} type="password" />
-          {errors.password && <span className="validation-error">{errors.password.message}</span>}
-        </div>
-        <div className="form-item">
           <label>Estado</label>
           <select {...register("state")} >
             <option value="ACTIVA" key="ACTIVA">Activo</option>
@@ -80,7 +87,7 @@ export default function UserForm() {
           </select>
           {errors.state && <span className="validation-error">{errors.state.message}</span>}
         </div>
-        <input className="button-primary" type="submit" value="Crear" />
+        <input className="button-primary" type="submit" value="Guardar" />
       </ form>
     </div >
   );

@@ -23,6 +23,8 @@ export const roundPrice = (price) => {
   return Math.round(price * 100) / 100;
 };
 
+export const roundNumber = roundPrice;
+
 export const calculateIva = (subtotal = "0", discount = "0") => {
   return roundPrice(
     (parseFloat(subtotal) - parseFloat(discount)) * IVA_PERCENTAJE

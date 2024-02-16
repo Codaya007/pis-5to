@@ -13,7 +13,7 @@ export const getUser = () => {
 };
 
 export const getUserInformation = () => {
-  return JSON.parse(window.sessionStorage.getItem("userInformation"));
+  // return JSON.parse(window.sessionStorage.getItem("userInformation"));
 };
 
 export const getExternal = () => {
