@@ -70,7 +70,7 @@ export default function ({ searchParams }) {
             }
 
             // ! token, recordar obtener el token del localstorage
-            let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWIxYTRjOWY3ZGJiMjVjMTVmNDk1OSIsImlhdCI6MTcwNzg3MDM3NiwiZXhwIjoxNzA4NDc1MTc2fQ.EXNDB-qiFyCvNLzQduSp6PyKvaZQnH4YvZV9tkfhvew"
+            let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjcxMWIyYjYyMmYzNzNiODJlMjRjMiIsImlhdCI6MTcwODA5MDkxNywiZXhwIjoxNzA4Njk1NzE3fQ.ZW0g0OtTCl2dYjROMatZ3ysELAG916K0qr3Iu29XTJM"
 
             let response = await obtener(`pronostics/${fechainicio}/${fechafin}?limit=${LIMIT_PAGINATOR}&page=${page}&populate=${populate}`, tkn);
             console.log({ response });

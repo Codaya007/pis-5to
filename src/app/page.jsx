@@ -52,7 +52,7 @@ export default function Home() {
   useEffect(() => {
     const getPronostics = async () => {
       // ! token, recordar obtener el token del localstorage
-      let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWIxYTRjOWY3ZGJiMjVjMTVmNDk1OSIsImlhdCI6MTcwNzE2ODQyOSwiZXhwIjoxNzA3NzczMjI5fQ.VIQjGAEa_SP53mFrPa2TsQh0ZSngS4hiukvpukilo3Q"
+      let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjcxMWIyYjYyMmYzNzNiODJlMjRjMiIsImlhdCI6MTcwODA5MDkxNywiZXhwIjoxNzA4Njk1NzE3fQ.ZW0g0OtTCl2dYjROMatZ3ysELAG916K0qr3Iu29XTJM"
 
       let response = await obtener(`pronostics/${fechaActual}/${fechaActual}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
 
@@ -84,8 +84,6 @@ export default function Home() {
     }
 
     getPronostics()
-
-    //TODO mostar los pronosticos en el carrusel de pronosticos
   }, []);
 
   useEffect(() => {
