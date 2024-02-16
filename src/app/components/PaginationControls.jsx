@@ -1,6 +1,4 @@
-// PaginationControls.js
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { LIMIT_PAGINATOR } from '../../hooks/Constants';
 
 const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage }) => {
@@ -12,7 +10,6 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
     router.push(`/prueba?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${total}`);
   }
 
-
   return (
     <div className='flex gap-2'>
       <button
@@ -21,7 +18,7 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
         onClick={() => {
           router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) - 1}`);
         }}>
-        prev page
+        Anterior
       </button>
 
       <div>
@@ -35,7 +32,7 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
         onClick={() => {
           router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) + 1}`);
         }}>
-        next page
+        Siguiente
       </button>
     </div>
   );

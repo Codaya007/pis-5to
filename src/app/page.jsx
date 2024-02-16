@@ -90,12 +90,12 @@ export default function Home() {
 
   useEffect(() => {
     if (!user) {
-      const userData = localStorage.getItem("user")
-      const token = localStorage.getItem("token")
+      const userData = window.localStorage.getItem("user")
+      const token = window.localStorage.getItem("token")
 
       loginUser(JSON.parse(userData), token)
     }
-  }, [localStorage.user]);
+  }, []);
 
   return (
     <main className="main-container">

@@ -80,7 +80,6 @@ export default function MotaForm() {
     }
   }, [token]);
 
-
   return (
     <div className="normal-form">
       <form onSubmit={handleSubmit(handleUpdateMota)}>

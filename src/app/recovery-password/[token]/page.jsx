@@ -1,13 +1,11 @@
 "use client";
 import Image from "next/image";
-
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-
-import { enviar } from "../../../hooks/hook/conexion";
 import mensajes from "../../components/Mensajes";
 import { useRouter } from "next/navigation";
+import { recoveryPassword } from "@/services/auth.service";
 
 export default function Login({ params }) {
   const { token } = params;
@@ -15,25 +13,23 @@ export default function Login({ params }) {
   const validationScheme = Yup.object().shape({
     password: Yup.string().required("Ingrese su contraseña"),
   });
-
   const formOptions = {
     resolver: yupResolver(validationScheme),
   };
-
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
   const sendData = async (data) => {
-    var data = { password: data.password };
-    enviar(`auth/recovery-password/${token}`, data).then((res) => {
+    try {
+      await recoveryPassword(token, { password: data.password },)
 
-      if (res.status == 400) {
-        mensajes("Información incorrecta", res.msg, "error");
-      } else {
-        mensajes("Contraseña cambiada", "Contraseña cambiada");
-        router.push("/login");
-      }
-    });
+      mensajes("Exito", "Usuario actualizado exitosamente");
+      router.push("/login");
+    } catch (error) {
+      console.log(error?.response?.data);
+
+      mensajes("Error", error.response?.data?.msg || "No se ha podido actualizar el usuario", "error");
+    }
   };
 
   return (
