@@ -13,3 +13,7 @@ export const BOOLEAN_DICTIONARY = {
   true: true,
   false: false,
 };
+
+export const IVA_PERCENTAJE = 0.12;
+
+export const APP_INITIAL_DATE = "2022/01/01";
