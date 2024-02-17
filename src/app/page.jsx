@@ -7,11 +7,12 @@ import { useAuth } from '@/context/AuthContext';
 
 const moment = require('moment-timezone');
 
-const CardByHour = ({ hour, img }) => {
+const CardByHour = ({ hour, img, weatherType }) => {
   return (
     <article className="card">
       <img src={img || "/Weather.png"} alt={`Weather icon at hour ${hour}`} />
       <h3>{hour}</h3>
+      <h3>{weatherType}</h3>
     </article>
   );
 };
@@ -47,24 +48,24 @@ export default function Home() {
   const { loginUser, user } = useAuth();
   const [pronosticos, setPronosticos] = useState({});
 
-  const fechaActual = moment().format('YYYY-MM-DD');
+  //! Cambiar por el día actual
+  // const fecha = '2024-01-21'
+  const fecha = moment().format('YYYY-MM-DD');
 
   useEffect(() => {
     const getPronostics = async () => {
-      // ! token, recordar obtener el token del localstorage
-      let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjcxMWIyYjYyMmYzNzNiODJlMjRjMiIsImlhdCI6MTcwODA5MDkxNywiZXhwIjoxNzA4Njk1NzE3fQ.ZW0g0OtTCl2dYjROMatZ3ysELAG916K0qr3Iu29XTJM"
+      let tkn = localStorage.getItem("token");
+      // let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2Y2NWQ5MjU0OTQ0ZjdhMTg2ZTBjNSIsImlhdCI6MTcwODA5NTM2MSwiZXhwIjoxNzA4NzAwMTYxfQ.Q0v7hwVO5eF13RVkCJ57NjXhuec7jc7AkK6lGi_DEo8"
 
-      let response = await obtener(`pronostics/${fechaActual}/${fechaActual}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
+      let response = await obtener(`pronostics/${fecha}/${fecha}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
 
       if (response.msg !== "OK") {
         alertMessage('Ocurrio un error', pronosticos.msg, ERROR)
       } else if (response.totalCount == 0) {
         alertMessage('No hay pronósticos', 'No existen pronósticos en el rango de fechas seleccionado', SUCCESS)
       } else {
-        //* Formateo de la fecha
         response.results.map((element) => {
-          // element.dateTime = moment(element.dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]');
-          element.dateTime = moment(element.dateTime).add(2, 'hours').add(28, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
+          element.dateTime = moment(element.dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]');
           return element;
         })
 
@@ -88,12 +89,12 @@ export default function Home() {
 
   useEffect(() => {
     if (!user) {
-      const userData = localStorage.getItem("user")
-      const token = localStorage.getItem("token")
+      const userData = window.localStorage.getItem("user")
+      const token = window.localStorage.getItem("token")
 
       loginUser(JSON.parse(userData), token)
     }
-  }, [localStorage.user]);
+  }, []);
 
   return (
     <main className="main-container">
@@ -144,8 +145,8 @@ export default function Home() {
               data.map((element, i) => {
                 const hour = element.dateTime.split('T')[1].slice(0, 5);
                 const img = element.pronostic.image;
-
-                return <CardByHour hour={hour} img={img} key={i} />;
+                const wType = element.pronostic.weatherType;
+                return <CardByHour hour={hour} img={img} key={i} weatherType={wType} />;
               })
             )
           })

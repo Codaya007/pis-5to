@@ -1,16 +1,11 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
-
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-
-import { enviar } from "../../hooks/hook/conexion";
 import mensajes from "../components/Mensajes";
-import { inicio_sesion } from "../../hooks/hook/Autentication";
 import { useRouter } from "next/navigation";
-import { estaSesion } from "../../hooks/hook/SesionUtilClient";
+import { forgotPassword } from "@/services/auth.service";
 
 export default function Login() {
   const router = useRouter();
@@ -22,23 +17,21 @@ export default function Login() {
     resolver: yupResolver(validationScheme),
   };
 
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
   const sendData = async (data) => {
-    var data = { email: data.email };
-    enviar("auth/forgot-password", data).then(
-      (res) => {
-        if (res.status == 400) {
-          mensajes("Información incorrecta", res.msg, "error");
-        } else {
-          console.log(res);
-          mensajes("Se ha enviado un link para recuperar su contraseña", "Mensaje enviado");
-          router.push("/");
-        }
-      }
-    );
+    try {
+      await forgotPassword(data);
 
+      mensajes("Exito", "Si ha ingresado sus datos correctamente, se enviará un email para recuperación de contraseña");
+
+      router.push("/login");
+    } catch (error) {
+      console.log(error?.response?.data);
+
+      mensajes("Error", error.response?.data?.msg || "No se ha podido enviar el email de recuperación", "error");
+    }
   };
 
   return (

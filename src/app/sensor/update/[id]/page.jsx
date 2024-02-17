@@ -50,7 +50,7 @@ export default function SensorForm() {
     if (token) {
       fetchSensor()
     }
-  }, [token]);
+  }, [token, fetchSensor]);
 
   return (
     <div className="normal-form">

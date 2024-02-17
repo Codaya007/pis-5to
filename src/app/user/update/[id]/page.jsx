@@ -57,7 +57,7 @@ export default function UserForm() {
     if (token) {
       fetchUser();
     }
-  }, [token]);
+  }, [token, fetchUser]);
 
   return (
     <div className="normal-form">

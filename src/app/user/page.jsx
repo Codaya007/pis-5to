@@ -32,7 +32,7 @@ export const UserCard = ({ user, token, refreshUsers }) => {
   return <article className="user-card">
     <div className="buttons">
       <button onClick={handleUpdateUser}>Editar</button>
-      <button style={{ color: "#a31818" }} onClick={handleDeleteUser}>Eliminar</button>
+      <button style={{ color: "#a31818" }} onClick={handleDeleteUser}>Dar de baja</button>
     </div>
     <h2 className="title">{user.name} {user.lastname}</h2>
     <p>Email: {user.email}</p>
@@ -61,13 +61,13 @@ export default function UserDashboard() {
       // TODO: Añadir redirección a login
       console.log("Inicie sesión para continuar");
     }
-  }, [token]);
+  }, [token, fetchUsers]);
 
   return (
     <div className="main-container vertical-top">
       <section className="buttons">
         <button className="button-primary">
-          <Link href={"/user/create"}>+ Nuevo usuario</Link>
+          <Link href={"/user/create"}>+ Añadir admin</Link>
         </button>
       </section>
       <section className="items-container">

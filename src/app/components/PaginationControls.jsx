@@ -1,9 +1,7 @@
-// PaginationControls.js
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { LIMIT_PAGINATOR } from '../../hooks/Constants';
 
-const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage }) => {
+const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage, baseUrlRedirect }) => {
   const router = useRouter();
 
   let page = searchParams['page'] || '1';
@@ -11,7 +9,6 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
   if (page > total) {
     router.push(`/prueba?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${total}`);
   }
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' , gap: '1', alignItems: 'center', marginBottom:'1rem', justifyContent: 'center', width: '100%'}}>
@@ -22,7 +19,7 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
         onClick={() => {
           router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) - 1}`);
         }}>
-        prev page
+        Anterior
       </button>
 
       <div>
@@ -35,9 +32,9 @@ const PaginationControls = ({ totalCount, searchParams, hasNextPage, hasPrevPage
         style={{ marginLeft: '1rem' }} 
         disabled={!hasNextPage}
         onClick={() => {
-          router.push(`/pronosticos?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) + 1}`);
+          router.push(`/${baseUrlRedirect}?inicio=${searchParams['inicio']}&fin=${searchParams['fin']}&page=${Number(page) + 1}`);
         }}>
-        next page
+        Siguiente
       </button>
     </div>
   );
