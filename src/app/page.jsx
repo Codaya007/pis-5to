@@ -7,11 +7,12 @@ import { useAuth } from '@/context/AuthContext';
 
 const moment = require('moment-timezone');
 
-const CardByHour = ({ hour, img }) => {
+const CardByHour = ({ hour, img, weatherType }) => {
   return (
     <article className="card">
       <img src={img || "/Weather.png"} alt={`Weather icon at hour ${hour}`} />
       <h3>{hour}</h3>
+      <h3>{weatherType}</h3>
     </article>
   );
 };
@@ -48,34 +49,34 @@ export default function Home() {
   const [pronosticos, setPronosticos] = useState({});
 
   //! Cambiar por el día actual
-  const fecha = '2024-01-21'
-  // const fechaActual = moment().format('YYYY-MM-DD');
+  // const fecha = '2024-01-21'
+  const fecha = moment().format('YYYY-MM-DD');
 
   useEffect(() => {
     const getPronostics = async () => {
-      // ! token, recordar obtener el token del localstorage
-      let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWIxYTRjOWY3ZGJiMjVjMTVmNDk1OSIsImlhdCI6MTcwNzE2ODQyOSwiZXhwIjoxNzA3NzczMjI5fQ.VIQjGAEa_SP53mFrPa2TsQh0ZSngS4hiukvpukilo3Q"
+      let tkn = localStorage.getItem("token");
+      // let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2Y2NWQ5MjU0OTQ0ZjdhMTg2ZTBjNSIsImlhdCI6MTcwODA5NTM2MSwiZXhwIjoxNzA4NzAwMTYxfQ.Q0v7hwVO5eF13RVkCJ57NjXhuec7jc7AkK6lGi_DEo8"
 
-      let response = await obtener(`pronostic/${fecha}/${fecha}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
+      let response = await obtener(`pronostics/${fecha}/${fecha}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
 
       if (response.msg !== "OK") {
         alertMessage('Ocurrio un error', pronosticos.msg, ERROR)
       } else if (response.totalCount == 0) {
         alertMessage('No hay pronósticos', 'No existen pronósticos en el rango de fechas seleccionado', SUCCESS)
       } else {
-        response.data.map((element) => {
+        response.results.map((element) => {
           element.dateTime = moment(element.dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]');
           return element;
         })
 
         let diccionario = {}
 
-        response.data.forEach(e => {
+        response.results.forEach(e => {
           const fecha = e.dateTime.split('T')[0]
           diccionario[fecha] = diccionario[fecha] ? [...diccionario[fecha], e] : [e];
         });
 
-        response.data = diccionario
+        response.results = diccionario
 
         console.log({ response });
 
@@ -137,17 +138,17 @@ export default function Home() {
           </ul>
         </div>
       </section>
-      {pronosticos && pronosticos.data != null && (
+      {pronosticos && pronosticos.results != null && (
         <section className="cards-by-hour">
-          {Object.keys(pronosticos.data).map((fecha) => {
-            const data = [...pronosticos.data[fecha]];
+          {Object.keys(pronosticos.results).map((fecha) => {
+            const data = [...pronosticos.results[fecha]];
             data.reverse();
             return (
               data.map((element, i) => {
                 const hour = element.dateTime.split('T')[1].slice(0, 5);
                 const img = element.pronostic.image;
-
-                return <CardByHour hour={hour} img={img} key={i} />;
+                const wType = element.pronostic.weatherType;
+                return <CardByHour hour={hour} img={img} key={i} weatherType={wType} />;
               })
             )
           })
