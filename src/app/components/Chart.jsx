@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2';
 
 const Chart = ({ data }) => {
   return (
-    <div style={{ minHeigth: '500px' }}>
+    <div style={{ height: '500px' }}>
       <Line
         data={data}
         options={{

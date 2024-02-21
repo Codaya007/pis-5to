@@ -54,7 +54,7 @@ export default function SensorDashboard() {
     } else {
       setSensors([])
     }
-  }, [token, fetchSensors]);
+  }, [token]);
 
   return (
     <div className="main-container vertical-top">

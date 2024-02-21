@@ -61,7 +61,7 @@ export default function UserDashboard() {
       // TODO: Añadir redirección a login
       console.log("Inicie sesión para continuar");
     }
-  }, [token, fetchUsers]);
+  }, [token]);
 
   return (
     <div className="main-container vertical-top">
