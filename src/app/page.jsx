@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Chart from './components/Chart';
 import { getWeatherDataStatics } from '@/services/weatherData.service';
 import { getPronosticsStatics } from '@/services/pronostic.service';
+// import { WithAuth } from './components/WithAuth';
 import { useRouter } from 'next/navigation';
 
 const PARAMETER_DICTIONARY = {
@@ -106,3 +107,5 @@ export default function Home() {
     </main>
   );
 }
+
+// export default WithAuth(Home)
