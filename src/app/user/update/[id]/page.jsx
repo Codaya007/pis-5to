@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { getUserById, updateUser } from "@/services/user.service";
+import { WithAuth } from "@/app/components/WithAuth";
 
 const validationSchema = object().shape({
   name: string()
@@ -19,7 +20,7 @@ const validationSchema = object().shape({
     .required("Estatus requerido")
 });
 
-export default function UserForm() {
+function UserForm() {
   const router = useRouter();
   const { id } = useParams();
   const { token } = useAuth();
@@ -92,3 +93,5 @@ export default function UserForm() {
     </div >
   );
 }
+
+export default WithAuth(UserForm)

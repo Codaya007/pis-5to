@@ -1,6 +1,8 @@
 "use client";
+import { WithAuth } from "@/app/components/WithAuth";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const STATUS_COLOR_DICTIONARY = {
   "ACTIVA": "green",
@@ -15,15 +17,15 @@ export const FORMAT_STATUS_DICTIONARY = {
   BLOQUEADA: "Bloqueado"
 };
 
-export default function Profile() {
+function Profile() {
   const { user } = useAuth()
-
+  const router = useRouter()
 
   return (
     <div className="normal-form">
       <div className="buttons">
-        <button>Volver</button>
-        <button>Editar</button>
+        {/* <button>Volver</button> */}
+        <button onClick={() => router.push(`/user/update/${user?.external_id}`)}>Editar</button>
       </div>
 
       <section>
@@ -58,3 +60,5 @@ export default function Profile() {
     </div>
   );
 }
+
+export default WithAuth(Profile)

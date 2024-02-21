@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getAllRoles } from "@/services/roles.service";
 import { getAllSensors } from "@/services/sensors.service";
+import { WithAuth } from "@/app/components/WithAuth";
 
 const validationSchema = object().shape({
   tag: string()
@@ -23,7 +24,7 @@ const validationSchema = object().shape({
   sensor: string().required("Sensor requerido").matches(UUID_REGEX, "Debe ser un sensor válido"),
 });
 
-export default function MotaForm() {
+function MotaForm() {
   const router = useRouter();
   // const [loading, setLoading] = useState(false);
   const formOptions = {
@@ -152,3 +153,5 @@ export default function MotaForm() {
     </div>
   );
 }
+
+export default WithAuth(MotaForm)

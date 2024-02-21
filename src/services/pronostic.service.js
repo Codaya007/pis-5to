@@ -24,6 +24,16 @@ export const getPronosticsInRange = async (token, from, to, limit, page) => {
   return data;
 };
 
+export const getPronosticsStatics = async (token, date) => {
+  const url = `${API_BASEURL}/pronostics/statics?${date ? `date=${date}` : ""}`;
+
+  const { data } = await axios.get(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data;
+};
+
 export const getPronosticById = async (id, token) => {
   const url = `${API_BASEURL}/pronostics/${id}`;
 

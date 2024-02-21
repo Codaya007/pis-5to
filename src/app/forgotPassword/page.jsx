@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import mensajes from "../components/Mensajes";
 import { useRouter } from "next/navigation";
 import { forgotPassword } from "@/services/auth.service";
+// import { WithAuth } from "../components/WithAuth";
 
-export default function Login() {
+function ForgotPasswordView() {
   const router = useRouter();
   const validationScheme = Yup.object().shape({
     email: Yup.string().required("Ingrese su email"),
@@ -63,3 +64,6 @@ export default function Login() {
     </div>
   );
 }
+
+
+export default ForgotPasswordView

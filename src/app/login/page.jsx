@@ -8,6 +8,7 @@ import mensajes from "../components/Mensajes";
 import { useRouter } from "next/navigation";
 import { login } from "../../services/auth.service"
 import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 export default function Login() {
   const router = useRouter();
@@ -40,6 +41,22 @@ export default function Login() {
       mensajes("Error en inicio de sesion", error.response?.data?.msg || "No se ha podido iniciar sesión", "error");
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      const userData = window.localStorage.getItem("user")
+      const token = window.localStorage.getItem("token")
+
+      // Si ya hay sesión, logueo al usuario, sino, lo mando al login
+      if (userData && token) {
+        loginUser(JSON.parse(userData), token)
+
+        router.push("/")
+      } else {
+        // router.push("/login")
+      }
+    }
+  }, []);
 
   return (
     <div className="normal-form">

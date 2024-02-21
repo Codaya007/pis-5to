@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import mensajeConfirmacion from "../components/MensajeConfirmacion";
+import { WithAuth } from "../components/WithAuth";
 
 const MotaCard = ({ tag, detail: description, ip, estado: connected, id, token, refreshMotas }) => {
   const router = useRouter();
@@ -42,7 +43,7 @@ const MotaCard = ({ tag, detail: description, ip, estado: connected, id, token, 
   </article>
 }
 
-export default function MotaDashboard() {
+function MotaDashboard() {
   const { token } = useAuth();
   const [nodes, setNodes] = useState([]);
 
@@ -76,3 +77,5 @@ export default function MotaDashboard() {
     </div>
   );
 }
+
+export default WithAuth(MotaDashboard)
