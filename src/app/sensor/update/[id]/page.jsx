@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getSensorById, updateSensor } from "@/services/sensors.service";
 import { useEffect } from "react";
+import { WithAuth } from "@/app/components/WithAuth";
 
 const validationSchema = object().shape({
   name: string()
@@ -14,7 +15,7 @@ const validationSchema = object().shape({
   unitMeasurement: string().max(4, "Máximo 4 caracteres").required("Campo requerido")
 });
 
-export default function SensorForm() {
+function SensorForm() {
   const { id } = useParams();
   const router = useRouter();
   const formOptions = {
@@ -77,3 +78,5 @@ export default function SensorForm() {
     </div>
   );
 }
+
+export default WithAuth(SensorForm)

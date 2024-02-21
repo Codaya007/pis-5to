@@ -31,6 +31,7 @@ body {
 
 .app-header {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   background-color: var(--primary-color);
 }
@@ -138,8 +139,9 @@ body {
 }
 
 .main-container {
-  width: 80%;
-  margin: auto;
+  min-width: 80%;
+  margin: 0 auto;
+  margin-left: 210px;
 }
 
 .items-container {
@@ -203,13 +205,26 @@ a {
   margin: 1.5rem 0;
 }
 
-.navbar {
+/* .navbar {
   width: 200px;
   height: 87vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: white;
+} */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 210px;
+  height: 100vh; /* Cambiado a 100vh para que ocupe toda la altura de la pantalla */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  overflow-y: auto; /* Permitir scroll vertical si es necesario */
+  z-index: 1000; /* Asegura que el navbar esté en la parte superior */
 }
 
 .navbar ul {
@@ -241,9 +256,7 @@ a {
 
 .app-container {
   display: flex;
-  background-color: var(--background-color);
-
-  /* flex: 1; */
+  height: 100%;
 }
 
 .text-primary {

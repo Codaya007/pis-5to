@@ -8,14 +8,14 @@ export default function Header() {
 
   return (
     <header className="app-header">
-      <Link href={"/"} className="logo">
+      {/* <Link href={"/"} className="logo">
         <Image
           src="/TempLogo.png"
           width={160}
           height={75}
           alt="Logo"
         />
-      </Link>
+      </Link> */}
       {user && <Link
         href={"/user/me"} className="user-header">
         <div>

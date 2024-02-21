@@ -15,11 +15,12 @@ import { APP_INITIAL_DATE } from "@/constants";
 import mensajes from "../components/Mensajes";
 import { getPronosticsInRange } from "@/services/pronostic.service";
 import { roundNumber } from "@/utils";
+import { WithAuth } from "../components/WithAuth";
 
 const moment = require("moment-timezone");
 moment.tz.setDefault("America/Bogota");
 
-export default function Pronosticos({ searchParams }) {
+function Pronosticos({ searchParams }) {
     const router = useRouter();
     const { token } = useAuth();
     const [pronosticos, setPronosticos] = useState({});
@@ -283,3 +284,5 @@ export default function Pronosticos({ searchParams }) {
         </div>
     );
 }
+
+export default WithAuth(Pronosticos)

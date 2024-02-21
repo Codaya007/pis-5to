@@ -20,3 +20,15 @@ export const getWeatherDataById = async (id, token) => {
 
   return data;
 };
+
+export const getWeatherDataStatics = async (token, date) => {
+  const url = `${API_BASEURL}/weatherdatas/statics?${
+    date ? `date=${date}` : ""
+  }`;
+
+  const { data } = await axios.get(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data;
+};
