@@ -31,8 +31,10 @@ export default function Pronosticos({ searchParams }) {
     const yesterdarDate = moment().subtract(1, "day").format("YYYY-MM-DD");
     const page = searchParams["page"] < 1 ? "1" : searchParams["page"];
     const limit = LIMIT_PAGINATOR;
-    const fechainicio = searchParams["inicio"] ?? yesterdarDate;
-    const fechafin = searchParams["fin"] ?? todayDate;
+    // const fechainicio = searchParams["inicio"] ?? yesterdarDate;
+    const fechainicio = searchParams["inicio"];
+    // const fechafin = searchParams["fin"] ?? todayDate;
+    const fechafin = searchParams["fin"];
     const start = (parseInt(page) - 1) * limit;
     const end = start + limit;
 
@@ -92,7 +94,7 @@ export default function Pronosticos({ searchParams }) {
                 setDefaultURL();
             }
 
-            const { results, totalCount } = await getPronosticsInRange(token, fechainicio, fechafin, limit, page);
+            let { results, totalCount } = await getPronosticsInRange(token, fechainicio, fechafin, limit, page);
             // const { results, totalCount } = await getPronosticsInRange(token, fromDate, toDate, limit, page);
 
             if (totalCount == 0) {
@@ -110,16 +112,21 @@ export default function Pronosticos({ searchParams }) {
                     return element;
                 });
 
+                console.log({ results });
                 let diccionario = {};
-
+                
                 results.forEach((e) => {
                     const fecha = e.dateTime.split("T")[0];
                     diccionario[fecha] = diccionario[fecha]
-                        ? [...diccionario[fecha], e]
-                        : [e];
+                    ? [...diccionario[fecha], e]
+                    : [e];
                 });
+                
+                
+                results = diccionario;
+                
+                console.log({ diccionario });
 
-                // results = diccionario;
 
                 setPronosticos({ totalCount, results: diccionario });
             }
@@ -169,7 +176,6 @@ export default function Pronosticos({ searchParams }) {
                                                             </td>
                                                             <td>{roundNumber(pronostico?.humidity)}%</td>
                                                             <td>{roundNumber(pronostico?.temperature)} °C</td>
-                                                            <td>{roundNumber(pronostico?.windSpeed)} m/h</td>
                                                             <td>{roundNumber(pronostico?.barometricPressure)} hPa</td>
                                                         </tr>
                                                     }

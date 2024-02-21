@@ -48,16 +48,12 @@ export default function Home() {
   const { loginUser, user } = useAuth();
   const [pronosticos, setPronosticos] = useState({});
 
-  //! Cambiar por el día actual
-  // const fecha = '2024-01-21'
   const fecha = moment().format('YYYY-MM-DD');
 
   useEffect(() => {
     const getPronostics = async () => {
       let tkn = localStorage.getItem("token");
-      // let tkn = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2Y2NWQ5MjU0OTQ0ZjdhMTg2ZTBjNSIsImlhdCI6MTcwODA5NTM2MSwiZXhwIjoxNzA4NzAwMTYxfQ.Q0v7hwVO5eF13RVkCJ57NjXhuec7jc7AkK6lGi_DEo8"
-
-      let response = await obtener(`pronostics/${fecha}/${fecha}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
+      let response = await obtener(`/pronostics/${fecha}/${fecha}?limit=${LIMIT_PAGINATOR}&page=${1}&populate=${true}`, tkn);
 
       if (response.msg !== "OK") {
         alertMessage('Ocurrio un error', pronosticos.msg, ERROR)

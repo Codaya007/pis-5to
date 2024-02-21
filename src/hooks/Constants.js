@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:3000/'
+// export const BASE_URL = 'http://localhost:3000/'
 export const LIMIT_PAGINATOR = 10
 export const FIRST_PAG = 1
 

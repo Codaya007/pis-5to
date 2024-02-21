@@ -1,4 +1,4 @@
-import { BASE_URL, LIMIT_PAGINATOR } from "./Constants";
+import { API_BASEURL } from "@/constants/index";
 
 export async function obtener(recurso, token = "") {
   let header = {
@@ -12,7 +12,7 @@ export async function obtener(recurso, token = "") {
 
   console.log({ header });
 
-  const response = await fetch(BASE_URL + recurso, {
+  const response = await fetch(API_BASEURL + recurso, {
     cache: "no-store",
     headers: header,
   });
@@ -30,7 +30,7 @@ export async function enviar(recurso, data, token = "") {
     header = { ...header, Authorization: `bearer ${token}` };
   }
 
-  const response = await fetch(BASE_URL + recurso, {
+  const response = await fetch(API_BASEURL + recurso, {
     method: "POST",
     headers: header,
     body: JSON.stringify(data),
