@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getAllRoles } from "@/services/roles.service";
 import { createSensor, getAllSensors } from "@/services/sensors.service";
+import { WithAuth } from "@/app/components/WithAuth";
 
 const validationSchema = object().shape({
   name: string()
@@ -15,7 +16,7 @@ const validationSchema = object().shape({
   unitMeasurement: string().max(4, "Máximo 4 caracteres").required("Campo requerido")
 });
 
-export default function SensorForm() {
+function SensorForm() {
   const router = useRouter();
   const formOptions = {
     resolver: yupResolver(validationSchema),
@@ -62,3 +63,5 @@ export default function SensorForm() {
     </div>
   );
 }
+
+export default WithAuth(SensorForm)

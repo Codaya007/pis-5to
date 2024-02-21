@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Chart from './components/Chart';
 import { getWeatherDataStatics } from '@/services/weatherData.service';
 import { getPronosticsStatics } from '@/services/pronostic.service';
+import { useRouter } from 'next/navigation';
 
 const PARAMETER_DICTIONARY = {
   temperature: "Temperatura",
@@ -20,13 +21,19 @@ export default function Home() {
   const { loginUser, user, token } = useAuth();
   const [history, setHistory] = useState([]);
   const [pronostics, setPronostics] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) {
       const userData = window.localStorage.getItem("user")
       const token = window.localStorage.getItem("token")
 
-      loginUser(JSON.parse(userData), token)
+      // Si ya hay sesión, logueo al usuario, sino, lo mando al login
+      if (userData && token) {
+        loginUser(JSON.parse(userData), token)
+      } else {
+        router.push("/login")
+      }
     }
   }, []);
 

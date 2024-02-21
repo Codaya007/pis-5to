@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 // import mensajes from "../components/Mensajes";
 import mensajeConfirmacion from "../components/MensajeConfirmacion";
+import { WithAuth } from "../components/WithAuth";
 
 export const UserCard = ({ user, token, refreshUsers }) => {
   const router = useRouter();
@@ -43,7 +44,7 @@ export const UserCard = ({ user, token, refreshUsers }) => {
   </article>
 }
 
-export default function UserDashboard() {
+function UserDashboard() {
   const { token } = useAuth();
   const [users, setUsers] = useState([]);
 
@@ -78,3 +79,5 @@ export default function UserDashboard() {
     </div>
   );
 }
+
+export default WithAuth(UserDashboard)

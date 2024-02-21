@@ -6,6 +6,7 @@ import mensajes from "../../components/Mensajes";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { updateUser } from "@/services/user.service";
+import { WithAuth } from "@/app/components/WithAuth";
 
 const validationSchema = object().shape({
   password: string()
@@ -17,7 +18,7 @@ const validationSchema = object().shape({
     .min(8, "La contraseña debe tener al menos 8 caracteres"),
 });
 
-export default function UserForm() {
+function UserForm() {
   const router = useRouter();
   const { token, user, logoutUser } = useAuth();
   const formOptions = {
@@ -54,3 +55,5 @@ export default function UserForm() {
     </div >
   );
 }
+
+export default WithAuth(UserForm)

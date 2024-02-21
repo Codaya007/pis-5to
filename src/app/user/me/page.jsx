@@ -1,4 +1,5 @@
 "use client";
+import { WithAuth } from "@/app/components/WithAuth";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,7 +17,7 @@ export const FORMAT_STATUS_DICTIONARY = {
   BLOQUEADA: "Bloqueado"
 };
 
-export default function Profile() {
+function Profile() {
   const { user } = useAuth()
   const router = useRouter()
 
@@ -59,3 +60,5 @@ export default function Profile() {
     </div>
   );
 }
+
+export default WithAuth(Profile)

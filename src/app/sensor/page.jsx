@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import mensajeConfirmacion from "../components/MensajeConfirmacion";
+import { WithAuth } from "../components/WithAuth";
 
 const SensorCard = ({ name, unitMeasurement, id, refreshSensors, token }) => {
   const router = useRouter();
@@ -37,7 +38,7 @@ const SensorCard = ({ name, unitMeasurement, id, refreshSensors, token }) => {
   </article>
 }
 
-export default function SensorDashboard() {
+function SensorDashboard() {
   const { token } = useAuth();
   const [sensors, setSensors] = useState([]);
 
@@ -71,3 +72,5 @@ export default function SensorDashboard() {
     </div>
   );
 }
+
+export default WithAuth(SensorDashboard)
