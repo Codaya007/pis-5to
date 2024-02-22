@@ -51,7 +51,7 @@ function SensorForm() {
     if (token) {
       fetchSensor()
     }
-  }, [token, fetchSensor]);
+  }, [token]);
 
   return (
     <div className="normal-form">

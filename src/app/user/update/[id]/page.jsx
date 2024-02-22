@@ -58,7 +58,7 @@ function UserForm() {
     if (token) {
       fetchUser();
     }
-  }, [token, fetchUser]);
+  }, [token]);
 
   return (
     <div className="normal-form">
