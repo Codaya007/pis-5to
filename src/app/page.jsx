@@ -82,7 +82,7 @@ export default function Home() {
     if (token) {
       fetchData();
     }
-  }, [selectedDate]);
+  }, [selectedDate, token]);
 
   return (
     <main className="main-container">
